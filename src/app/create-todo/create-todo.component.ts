@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { priorityOptions } from '../shared/consts/priority-options';
+import { PriorityOptions } from '../shared/consts/priority-options';
 import { PriorityOption } from '../shared/interfaces/priority-option';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TodoPriority } from '../shared/enums/todo-priority';
@@ -17,7 +17,7 @@ export class CreateTodoComponent implements OnInit, OnDestroy {
   /** Form */
   public todoFormGroup: FormGroup;
   /** Options for priority field */
-  public priorityOptions: PriorityOption[] = priorityOptions;
+  public priorityOptions: PriorityOption[] = PriorityOptions;
   /** Model for editing */
   public currentTodoModel: Todo | null = null;
   /** Subscription for observables to unsubscribe after component destroy. */
