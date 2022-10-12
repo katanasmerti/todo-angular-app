@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { TodosRoutingModule } from './todos-routing.module';
 import { TodosComponent } from './todos.component';
 
@@ -11,7 +10,6 @@ import { TodosComponent } from './todos.component';
   imports: [
     CommonModule,
     TodosRoutingModule,
-    FormsModule,
   ],
 })
 export class TodosModule {

@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CreateTodoComponent } from './create-todo.component';
 import { CreateTodoRoutingModule } from './create-todo-routing.module';
-
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -11,7 +10,8 @@ import { CreateTodoRoutingModule } from './create-todo-routing.module';
   ],
   imports: [
     CommonModule,
-    CreateTodoRoutingModule
+    CreateTodoRoutingModule,
+    ReactiveFormsModule,
   ]
 })
 export class CreateTodoModule { }
