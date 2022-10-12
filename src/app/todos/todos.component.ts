@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AppService } from '../app.service';
 import { Todo } from '../shared/interfaces/todo';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-todos',
@@ -16,28 +17,34 @@ export class TodosComponent implements OnInit, OnDestroy {
   /** List of todos. */
   todos: Todo[] = [];
 
-  constructor(private appService: AppService) {
+  constructor(private appService: AppService, private router: Router) {
     console.debug('TodosComponent initiated.');
   }
 
-  ngOnInit(): void {
-    this.subscription.add(this.appService.todos.subscribe({
+  public ngOnInit(): void {
+    this.subscription.add(this.appService.todos$.subscribe({
       next: (value: Todo[]): void => {
         this.todos = value;
       },
     }));
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
-  toggleTodo(todo: Todo): void {
+  public toggleTodo(todo: Todo): void {
     todo.done = !todo.done;
-    this.appService.todos.next(this.todos);
+    this.appService.todos$.next(this.todos);
   }
 
-  clean(): void {
-    this.appService.todos.next(this.todos.filter((todo: Todo): boolean => !todo.done));
+  public clean(): void {
+    this.appService.todos$.next(this.todos.filter((todo: Todo): boolean => !todo.done));
+  }
+
+  public onEditTask($event: MouseEvent, taskData: Todo): void {
+    $event.stopPropagation();
+    this.appService.taskForEditing$.next(taskData);
+    this.router.navigate(['/new']);
   }
 }

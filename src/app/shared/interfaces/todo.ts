@@ -2,7 +2,7 @@ import { TodoPriority } from '../enums/todo-priority';
 
 /**
  * Represents data structure of a single task/to-do.
- * @see AppService.todos
+ * @see AppService.todos$
  */
 export interface Todo {
   // Title of the task
@@ -13,4 +13,6 @@ export interface Todo {
   date: number;
   // Priority of the task
   priority: TodoPriority;
+  // Unique Id
+  id: number;
 }

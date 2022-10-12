@@ -1,15 +1,22 @@
+<!-- Create task form -->
 <form [formGroup]="todoFormGroup">
   <div class="form-wrapper">
+    <!-- Title field -->
     <div class="mb-3">
       <label for="taskName" class="form-label">Task name</label>
-      <input [class.invalid]="isTitleInvalid" class="form-control" id="taskName" formControlName="title" [value]="titleControl?.value">
+      <input [class.invalid]="isTitleInvalid"
+             [value]="titleControl?.value"
+             class="form-control"
+             id="taskName"
+             formControlName="title">
       <div class="error-msg" *ngIf="isTitleInvalid">
         Name is required.
       </div>
     </div>
+    <!-- Priority field -->
     <div class="mb-3">
       <div class="form-label">Priority</div>
-      <div class="priority-group">
+      <div class="priority-group d-flex">
         <div *ngFor="let option of priorityOptions" class="form-check">
           <input [id]="option.label"
                  [value]="option.value"
@@ -23,8 +30,20 @@
       </div>
     </div>
   </div>
-  <div class="main-buttons">
-    <button (click)="createTodo()" class="btn btn-primary">Submit</button>
-    <button (click)="resetForm()" class="btn btn-secondary">Reset</button>
+  <!-- Submit/Reset buttons block -->
+  <div class="main-buttons d-flex justify-content-center">
+    <button (click)="createTodo()"
+            [disabled]="isFormInvalid"
+            [class.disabled]="isFormInvalid"
+            class="btn btn-primary">
+      Submit
+    </button>
+    <!-- This button is disabled when user editing existing task -->
+    <button [class.disabled]="currentTodoModel"
+            [disabled]="currentTodoModel"
+            (click)="resetForm()"
+            class="btn btn-secondary">
+      Reset
+    </button>
   </div>
 </form>

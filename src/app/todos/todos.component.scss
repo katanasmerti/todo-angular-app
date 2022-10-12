@@ -4,6 +4,19 @@
   cursor: pointer;
   border-left-width: 4px;
 
+  &-icon {
+    font-size: 25px;
+    &:hover {
+      transition: 0.2s;
+      color: $dark-green;
+    }
+  }
+
+  &-date {
+    gap: 15px;
+    text-align: end;
+  }
+
   &:hover:not(.done) {
     background: rgba(black, 0.01);
   }

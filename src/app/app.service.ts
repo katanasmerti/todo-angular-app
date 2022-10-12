@@ -16,7 +16,10 @@ export class AppService {
    * Loading and saving is handled by this service.
    * Components can watch and make changes to the list.
    */
-  readonly todos: BehaviorSubject<Todo[]> = new BehaviorSubject<Todo[]>([]);
+  public readonly todos$: BehaviorSubject<Todo[]> = new BehaviorSubject<Todo[]>([]);
+
+  /** Current task model for editing */
+  public readonly taskForEditing$: BehaviorSubject<Todo | null> = new BehaviorSubject<Todo | null>(null);
 
   constructor() {
     console.debug('AppService initiated.');
@@ -29,9 +32,9 @@ export class AppService {
       storedTodos = JSON.stringify(FakeTodos);
     }
     /** Emit initial value to the subject. */
-    this.todos.next(JSON.parse(storedTodos));
+    this.todos$.next(JSON.parse(storedTodos));
     /** Watch to save new changes to localStorage. */
-    this.todos.subscribe({
+    this.todos$.subscribe({
       next: (value: Todo[]): void => {
         console.debug('Saving todos to localStorage.');
         localStorage.setItem(this.todosKey, JSON.stringify(value));
@@ -39,9 +42,17 @@ export class AppService {
     });
   }
 
+  /** Add new task to TodoList. */
   public addTask(data: Todo): void {
-    const todos = [...this.todos.value];
-    todos.push(data);
-    this.todos.next(todos);
+    this.todos$.next([...this.todos$.value, data]);
+  }
+
+  /** Update existing task in TodoList. */
+  public updateTask(data: Todo): void {
+    const todoList = this.todos$.value
+    const todoIndex = todoList.findIndex(el => el.id === data.id);
+
+    todoList.splice(todoIndex, 1, data);
+    this.todos$.next(todoList);
   }
 }
