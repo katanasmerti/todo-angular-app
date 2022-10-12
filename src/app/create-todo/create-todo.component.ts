@@ -88,6 +88,7 @@ export class CreateTodoComponent implements OnInit, OnDestroy {
     }
   }
 
+  /** Reset form and set default value for priority */
   public resetForm(): void {
     this.todoFormGroup.reset();
     this.todoFormGroup.patchValue({ priority: TodoPriority.LOW });
