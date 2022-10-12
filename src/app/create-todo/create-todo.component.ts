@@ -38,7 +38,7 @@ export class CreateTodoComponent {
         done: false,
         date: new Date().getTime(),
       }
-      this.appService.addTask(newTask)
+      this.appService.addTask(newTask);
       this.resetForm();
     } else {
       this.todoFormGroup.markAllAsTouched();
