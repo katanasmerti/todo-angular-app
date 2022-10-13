@@ -35,6 +35,6 @@ npm run lint
 - `/` Todos list.
 - `/new` Create new todo.
 
-## Production
+## Deploy
 
-[Todo-prod](https://whimsical-blini-84e2c3.netlify.app/)
+[TodoApp](https://whimsical-blini-84e2c3.netlify.app/)
