@@ -20,6 +20,8 @@ export class CreateTodoComponent implements OnInit, OnDestroy {
   public priorityOptions: PriorityOption[] = PriorityOptions;
   /** Model for editing */
   public currentTodoModel: Todo | null = null;
+  /** Flag to check is submit btn clicked */
+  public submitBtnClicked: boolean = false;
   /** Subscription for observables to unsubscribe after component destroy. */
   private subscription$: Subscription = new Subscription();
 
@@ -27,18 +29,27 @@ export class CreateTodoComponent implements OnInit, OnDestroy {
     return this.todoFormGroup.get('title');
   }
 
+  public get dateControl(): AbstractControl<FormControl> | null {
+    return this.todoFormGroup.get('date');
+  }
+
   public get isTitleInvalid(): boolean {
     return Boolean(this.titleControl?.invalid && this.titleControl?.touched);
+  }
+
+  public get isDateInvalid(): boolean {
+    return Boolean(this.dateControl?.touched && !this.dateControl?.value);
   }
 
   public get isFormInvalid(): boolean {
     return Boolean(this.todoFormGroup.invalid && this.todoFormGroup.touched);
   }
 
-  constructor(protected fb: FormBuilder, private appService: AppService) {
+  constructor(private fb: FormBuilder, private appService: AppService) {
     /** Init task form group */
     this.todoFormGroup = this.fb.group({
       title: ['', Validators.required],
+      date: [null, Validators.required],
       priority: TodoPriority.LOW,
     });
   }
@@ -49,7 +60,8 @@ export class CreateTodoComponent implements OnInit, OnDestroy {
       this.currentTodoModel = data ? { ...data } : null;
 
       if (data) {
-        this.todoFormGroup.patchValue({ ...data });
+        const date = new Date(data.date);
+        this.todoFormGroup.patchValue({ ...data, date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` });
       }
     }));
   }
@@ -59,7 +71,8 @@ export class CreateTodoComponent implements OnInit, OnDestroy {
   }
 
   public createTodo(): void {
-    if (this.todoFormGroup.valid) {
+    this.submitBtnClicked = true;
+    if (this.todoFormGroup.valid && !this.isDateInvalid) {
       /** Bock for editing existing task */
       if (this.currentTodoModel) {
         const newTask: Todo = {
@@ -68,7 +81,6 @@ export class CreateTodoComponent implements OnInit, OnDestroy {
         };
 
         this.appService.updateTask(newTask);
-        this.appService.taskForEditing$.next(null);
         this.resetForm();
         return;
       }
@@ -76,7 +88,7 @@ export class CreateTodoComponent implements OnInit, OnDestroy {
       const date = Date.now();
       const newTask: Todo = {
         ...this.todoFormGroup.value,
-        date,
+        date: Date.parse(`${this.dateControl?.value}`),
         done: false,
         id: date,
       };
@@ -90,6 +102,7 @@ export class CreateTodoComponent implements OnInit, OnDestroy {
 
   /** Reset form and set default value for priority */
   public resetForm(): void {
+    this.submitBtnClicked = false;
     this.todoFormGroup.reset();
     this.todoFormGroup.patchValue({ priority: TodoPriority.LOW });
   }

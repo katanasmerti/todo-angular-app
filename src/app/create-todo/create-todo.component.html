@@ -13,6 +13,18 @@
         Name is required.
       </div>
     </div>
+    <div class="mb-3 date">
+      <label for="date" class="form-label">Task deadline</label>
+      <input [class.invalid]="isDateInvalid"
+             [value]="dateControl?.value"
+             type="date"
+             class="form-control"
+             id="date"
+             formControlName="date">
+      <div class="error-msg" *ngIf="isDateInvalid">
+        Date is required.
+      </div>
+    </div>
     <!-- Priority field -->
     <div class="mb-3">
       <div class="form-label">Priority</div>
@@ -33,8 +45,8 @@
   <!-- Submit/Reset buttons block -->
   <div class="main-buttons d-flex justify-content-center">
     <button (click)="createTodo()"
-            [disabled]="isFormInvalid"
-            [class.disabled]="isFormInvalid"
+            [disabled]="isFormInvalid && submitBtnClicked"
+            [class.disabled]="isFormInvalid && submitBtnClicked"
             class="btn btn-primary">
       Submit
     </button>

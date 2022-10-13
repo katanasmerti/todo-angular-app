@@ -54,5 +54,6 @@ export class AppService {
 
     todoList.splice(todoIndex, 1, data);
     this.todos$.next(todoList);
+    this.taskForEditing$.next(null);
   }
 }

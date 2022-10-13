@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AppService } from './app.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  constructor() {
+  constructor(private appService: AppService) {
     console.debug('AppComponent initiated.');
+  }
+
+  public clearCurrentTask(): void {
+    this.appService.taskForEditing$.next(null);
   }
 }
